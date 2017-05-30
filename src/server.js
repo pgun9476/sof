@@ -31,6 +31,8 @@ import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
 import config from './config';
 
+import FinalRecommendationTable from './data/tableau/FinalRecommendationTable';
+
 const app = express();
 
 //
@@ -45,8 +47,8 @@ global.navigator.userAgent = global.navigator.userAgent || 'all';
 // -----------------------------------------------------------------------------
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+app.use(bodyParser.json({limit: '100mb'}));
 
 //
 // Authentication
@@ -101,6 +103,8 @@ app.use('/graphql', expressGraphQL(req => ({
 app.get('*', async (req, res, next) => {
   try {
     const css = new Set();
+
+    console.log(JSON.stringify(assets, undefined, 2));
 
     const fetch = createFetch({
       baseUrl: config.api.serverUrl,
@@ -169,9 +173,40 @@ app.get('*', async (req, res, next) => {
       state: context.store.getState(),
     };
 
+
+    //console.log(JSON.stringify(data, undefined, 2));
+
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
     res.status(route.status || 200);
     res.send(`<!doctype html>${html}`);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/init/data', async (req, res, next) => {
+  try {
+    console.log('/init/data - POST');
+    //console.log(JSON.parse(req.body.data));
+    //console.log("#####");
+    //console.log(tableData);
+    //console.log(req.body.name),
+    //console.log(JSON.parse(req.body.column)),
+    //console.log(req.body.dataCount)
+    // @TODO - pass the data in to session
+
+    const model = new FinalRecommendationTable();
+    model.data = JSON.parse(req.body.data);
+    model.columns = JSON.parse(req.body.column);
+    const data = model.getFormattedData();
+    const metaData = model.getMetadata();
+
+    res.status(200);
+    res.send({
+      metaData,
+      data,
+    });
+
   } catch (err) {
     next(err);
   }

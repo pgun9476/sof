@@ -2,11 +2,11 @@ version: '2'
 services:
   web:
     build:
-      context: .
-      dockerfile: './Dockerfile.local'
+      context: ../
+      dockerfile: './docker/Dockerfile.local'
     command: npm run start
     ports:
      - "8081:3000"
     volumes:
-     - .:/app
+     - ../:/app
      - /app/node_modules

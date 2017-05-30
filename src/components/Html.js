@@ -50,9 +50,25 @@ class Html extends React.Component {
               dangerouslySetInnerHTML={{ __html: style.cssText }}
             />,
           )}
+
+          <link href="/styles/kendo-custom.css" rel="stylesheet"/>
+
+          <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet"/>
+          <link href="/kendo/styles/kendo.rtl.min.css" rel="stylesheet"/>
+          <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet"/>
+          <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet"/>
+          <script src="/kendo/js/jquery.min.js"></script>
+          <script src="/kendo/js/jszip.min.js"></script>
+          <script src="/kendo/js/kendo.all.min.js"></script>
+
+          <script src="/lodash/lodash.js"></script>
+
+          <script type="text/javascript" src="http://ms240tableau01/javascripts/api/tableau-2.1.1.min.js"></script>
+          <script type="text/javascript" src="viz.js"></script>
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
+
           <script dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }} />
           {scripts.map(script => <script key={script} src={script} />)}
           {config.analytics.googleTrackingId &&
@@ -65,6 +81,7 @@ class Html extends React.Component {
           {config.analytics.googleTrackingId &&
             <script src="https://www.google-analytics.com/analytics.js" async defer />
           }
+
         </body>
       </html>
     );

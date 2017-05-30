@@ -1,0 +1,15 @@
+#dataTable
+{
+  position: relative; /* required */
+  /*margin: 1em 4em;*/
+  /*padding: .5em;*/
+  z-index: 2; /* random value, not required */
+  height: 400px;
+  width: 1300px;
+  font-size: .5em;
+}
+
+div.k-loading-mask
+{
+  z-index: 3; /* must be larger than the z-index:2 of #container */
+}

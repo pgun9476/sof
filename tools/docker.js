@@ -19,19 +19,21 @@ import pkg from '../package.json';
  * Compiles the project from source files into a distributable
  * format and copies it to the output (build) folder.
  */
-async function build() {
-  await run(clean);
-  await run(copy);
-  await run(bundle);
+async function docker() {
+  const dComm = ['-f', './docker/docker-compose.local.yml'];
 
-  if (process.argv.includes('--static')) {
-    await run(render);
+  if (process.argv.includes('--build')) {
+    await run(clean);
+    await run(copy);
+    await run(bundle);
+    dComm.push('build');
   }
-  /*
-  if (process.argv.includes('--docker')) {
-    cp.spawnSync(['build', '-t', pkg.name, '.'], { stdio: 'inherit' });
+
+  if (process.argv.includes('--up')) {
+    dComm.push('up');
   }
-  */
+
+  cp.spawnSync('docker-compose', dComm, { stdio: 'inherit' });
 }
 
-export default build;
+export default docker;

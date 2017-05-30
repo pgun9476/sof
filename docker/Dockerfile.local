@@ -2,7 +2,7 @@ FROM node:6.10.0-alpine
 
 RUN mkdir /app
 
-COPY package.json /app/
+COPY ./package.json /app/
 
 # Set a working directory
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN npm install node-pre-gyp
 
 RUN npm install sqlite3
 
-COPY . /app
+COPY ./ /app
 
 #EXPOSE 3000
 

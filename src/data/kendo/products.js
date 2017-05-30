@@ -1,4 +1,4 @@
-﻿var products = [{
+﻿export default [{
     ProductID : 1,
     ProductName : "Chai",
     SupplierID : 1,

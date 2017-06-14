@@ -51,20 +51,25 @@ class Html extends React.Component {
             />,
           )}
 
-          <link href="/styles/kendo-custom.css" rel="stylesheet"/>
+          <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
 
-          <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet"/>
-          <link href="/kendo/styles/kendo.rtl.min.css" rel="stylesheet"/>
-          <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet"/>
-          <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet"/>
-          <script src="/kendo/js/jquery.min.js"></script>
-          <script src="/kendo/js/jszip.min.js"></script>
-          <script src="/kendo/js/kendo.all.min.js"></script>
+          <link href="/styles/kendo-custom.css" rel="stylesheet" />
 
-          <script src="/lodash/lodash.js"></script>
+          <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" />
+          <link href="/kendo/styles/kendo.rtl.min.css" rel="stylesheet" />
+          <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" />
+          <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" />
+          <script src="/kendo/js/jquery.min.js" />
+          <script src="/kendo/js/jszip.min.js" />
+          <script src="/kendo/js/kendo.all.min.js" />
 
-          <script type="text/javascript" src="http://ms240tableau01/javascripts/api/tableau-2.1.1.min.js"></script>
-          <script type="text/javascript" src="viz.js"></script>
+          <script src="/lodash/lodash.js" />
+
+          <script type="text/javascript" src="http://ms240tableau01/javascripts/api/tableau-2.1.1.min.js" />
+          <script type="text/javascript" src="viz.js" />
+
+          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" />
+          <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />

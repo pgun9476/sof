@@ -1,0 +1,8 @@
+list-ui:
+  image: sysco/${APP_NAME}:${buildNumber}
+  ports:
+    - '${HOST_PORT}:5050'
+  environment:
+    - LIST_BFF=${LIST_BFF}
+  labels:
+    io.rancher.scheduler.affinity:host_label: service=List-UI

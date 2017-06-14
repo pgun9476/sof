@@ -188,10 +188,7 @@ const clientConfig = {
     // http://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: (module) => {
-        console.log(JSON.stringify(module.resource, undefined, 2))
-        return /node_modules/.test(module.resource)
-      },
+      minChunks: module => /node_modules/.test(module.resource),
     }),
 
     ...isDebug ? [] : [

@@ -1,4 +1,7 @@
-FROM node:6.10.0-alpine
+FROM node:6.9.5-alpine
+
+ARG KENDO_USERNAME
+ARG KENDO_PASSWORD
 
 RUN mkdir /app
 
@@ -7,15 +10,13 @@ COPY ./package.json /app/
 # Set a working directory
 WORKDIR /app
 
+RUN npm install -g yarn
+
 # Install Node.js dependencies
-RUN npm install
+RUN yarn install
 
-RUN npm install node-pre-gyp
+RUN rm -rf ~/.netrc
 
-RUN npm install sqlite3
+RUN printf "machine bower.telerik.com\n\tlogin $KENDO_USERNAME\n\tpassword $KENDO_PASSWORD" > ~/.netrc
 
-COPY ./ /app
-
-#EXPOSE 3000
-
-#CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start" ]

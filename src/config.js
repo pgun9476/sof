@@ -13,8 +13,6 @@ if (process.env.BROWSER) {
   throw new Error('Do not import `config.js` from inside the client-side code.');
 }
 
-console.log(process.env.PORT);
-
 module.exports = {
   // Node.js app
   port: process.env.PORT || 3000,
@@ -57,5 +55,10 @@ module.exports = {
       key: process.env.TWITTER_CONSUMER_KEY || 'Ie20AZvLJI2lQD5Dsgxgjauns',
       secret: process.env.TWITTER_CONSUMER_SECRET || 'KTZ6cxoKnEakQCeSpZlaUCJWGAlTEBJj0y2EMkUBujA7zWSvaQ',
     },
+  },
+  // Tableau settings
+  tableau: {
+    dashboardUrl: process.env.TABLEAU_DASHBOARD_URL || 'http://ms240tableau01/t/CI/views/Priyantha-OpportunityFeederforSpecialists/Recommendations',
+    dashboardContactTable: process.env.TABLEAU_DASHBOARD_CONTACT_TABLE || 'Final Recommendations Table',
   },
 };

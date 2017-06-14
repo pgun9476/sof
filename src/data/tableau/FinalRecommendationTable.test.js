@@ -17,8 +17,10 @@ describe('FinalRecommendationTable', () => {
     model.columns = columns;
     const data = model.getFormattedData();
     const config = model.getMetadata();
-    console.log(config);
-    console.log(data);
+    const metaDataInSelectTable = model.getMetaDataForSelectedTable();
+    //console.log(config);
+    //console.log(data);
+    console.log(metaDataInSelectTable);
     //expect(true).to.be.true;
   });
 

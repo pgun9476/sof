@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    image: sof-web:local
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.local
+      args:
+        KENDO_USERNAME: ${KENDO_USERNAME}
+        KENDO_PASSWORD: ${KENDO_PASSWORD}
+    volumes:
+      - ../:/app
+    ports:
+      - 8090:3010
+      - 8091:3001
+      - 8092:3002
+    environment:
+      ENV: development-PRIYA
+      PORT: 3010
+      TABLEAU_DASHBOARD_URL: http://ms240tableau01/t/CI/views/Priyantha-OpportunityFeederforSpecialists/Recommendations
+      TABLEAU_DASHBOARD_CONTACT_TABLE: Final Recommendations Table

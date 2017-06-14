@@ -1,0 +1,31 @@
+FROM sysco/node:6.9.5
+
+MAINTAINER Dinidu
+
+ENV LISTUIPATH /app
+ENV LISTUIVERSION 1.0.0
+ARG BRANCH=develop
+ARG KENDO_USERNAME=""
+ARG KENDO_PASSWORD=""
+
+RUN mkdir -p "$LISTPATH/config" "$LISTPATH/src"
+
+WORKDIR $LISTPATH/src
+
+RUN git clone https://syylabs-devops:1qazxdr5@bitbucket.org/syscolabs/list-ui.git && \
+    cd list-ui && \
+    git checkout $BRANCH
+
+WORKDIR $LISTBFFPATH/src/list-ui
+
+# create log directory
+RUN mkdir logs
+
+# create .netrc file for downlord kendo packages
+RUN printf "machine bower.telerik.com\n\tlogin $KENDO_USERNAME\n\tpassword $KENDO_PASSWORD" > ~/.netrc
+
+RUN npm install
+
+RUN npm run build
+
+CMD ["pm2-docker","bin/www"]

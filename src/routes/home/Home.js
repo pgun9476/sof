@@ -15,9 +15,19 @@ class Home extends React.Component {
   render() {
     return (
       <div className={s.root}>
-        <div id="vizContainer" style={{width: 1300, height: 450, display: 'block', overflow: 'hidden'}}></div>
-
-        <div id="dataTable"></div>
+        <div className={s.container}>
+          <h1>React.js News</h1>
+          {this.props.news.map(item => (
+            <article key={item.link} className={s.newsItem}>
+              <h1 className={s.newsTitle}><a href={item.link}>{item.title}</a></h1>
+              <div
+                className={s.newsDesc}
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{__html: item.content}}
+              />
+            </article>
+          ))}
+        </div>
       </div>
     );
   }

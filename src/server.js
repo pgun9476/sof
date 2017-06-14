@@ -12,8 +12,6 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
-import expressGraphQL from 'express-graphql';
-import jwt from 'jsonwebtoken';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
@@ -22,16 +20,13 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
-import passport from './passport';
 import router from './router';
-import models from './data/models';
-import schema from './data/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
 import config from './config';
 
-import FinalRecommendationTable from './data/tableau/FinalRecommendationTable';
+import serverRoutes from './routes-server';
 
 const app = express();
 
@@ -50,52 +45,11 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(bodyParser.json({limit: '100mb'}));
 
-//
-// Authentication
-// -----------------------------------------------------------------------------
-app.use(expressJwt({
-  secret: config.auth.jwt.secret,
-  credentialsRequired: false,
-  getToken: req => req.cookies.id_token,
-}));
-// Error handler for express-jwt
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  if (err instanceof Jwt401Error) {
-    console.error('[express-jwt-error]', req.cookies.id_token);
-    // `clearCookie`, otherwise user can't use web-app until cookie expires
-    res.clearCookie('id_token');
-  } else {
-    next(err);
-  }
-});
-
-app.use(passport.initialize());
-
 if (__DEV__) {
   app.enable('trust proxy');
 }
-app.get('/login/facebook',
-  passport.authenticate('facebook', { scope: ['email', 'user_location'], session: false }),
-);
-app.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login', session: false }),
-  (req, res) => {
-    const expiresIn = 60 * 60 * 24 * 180; // 180 days
-    const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
-    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-    res.redirect('/');
-  },
-);
 
-//
-// Register API middleware
-// -----------------------------------------------------------------------------
-app.use('/graphql', expressGraphQL(req => ({
-  schema,
-  graphiql: __DEV__,
-  rootValue: { request: req },
-  pretty: __DEV__,
-})));
+app.use("/", serverRoutes);
 
 //
 // Register server-side rendering middleware
@@ -103,8 +57,6 @@ app.use('/graphql', expressGraphQL(req => ({
 app.get('*', async (req, res, next) => {
   try {
     const css = new Set();
-
-    console.log(JSON.stringify(assets, undefined, 2));
 
     const fetch = createFetch({
       baseUrl: config.api.serverUrl,
@@ -120,6 +72,7 @@ app.get('*', async (req, res, next) => {
       // I should not use `history` on server.. but how I do redirection? follow universal-router
     });
 
+    // Set the store values with server initiated
     store.dispatch(setRuntimeVariable({
       name: 'initialNow',
       value: Date.now(),
@@ -162,8 +115,8 @@ app.get('*', async (req, res, next) => {
       { id: 'css', cssText: [...css].join('') },
     ];
     data.scripts = [
-      assets.vendor.js,
-      assets.client.js,
+      //assets.vendor.js,
+      //assets.client.js,
     ];
     if (assets[route.chunk]) {
       data.scripts.push(assets[route.chunk].js);
@@ -173,40 +126,9 @@ app.get('*', async (req, res, next) => {
       state: context.store.getState(),
     };
 
-
-    //console.log(JSON.stringify(data, undefined, 2));
-
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
     res.status(route.status || 200);
     res.send(`<!doctype html>${html}`);
-  } catch (err) {
-    next(err);
-  }
-});
-
-app.post('/init/data', async (req, res, next) => {
-  try {
-    console.log('/init/data - POST');
-    //console.log(JSON.parse(req.body.data));
-    //console.log("#####");
-    //console.log(tableData);
-    //console.log(req.body.name),
-    //console.log(JSON.parse(req.body.column)),
-    //console.log(req.body.dataCount)
-    // @TODO - pass the data in to session
-
-    const model = new FinalRecommendationTable();
-    model.data = JSON.parse(req.body.data);
-    model.columns = JSON.parse(req.body.column);
-    const data = model.getFormattedData();
-    const metaData = model.getMetadata();
-
-    res.status(200);
-    res.send({
-      metaData,
-      data,
-    });
-
   } catch (err) {
     next(err);
   }
@@ -220,7 +142,6 @@ pe.skipNodeFiles();
 pe.skipPackage('express');
 
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  console.error(pe.render(err));
   const html = ReactDOM.renderToStaticMarkup(
     <Html
       title="Internal Server Error"
@@ -237,8 +158,8 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-models.sync().catch(err => console.error(err.stack)).then(() => {
-  app.listen(config.port, () => {
-    console.info(`The server is running at http://localhost:${config.port}/`);
-  });
+
+app.listen(config.port, () => {
+  console.info(`The server is running at http://localhost:${config.port}/`);
 });
+

@@ -24,25 +24,28 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className={s.root}>
-        <div id="vizContainer" style={{width:1300, height:450, display: 'block', overflow: 'hidden'}}></div>
-        <div id="dataTable"></div>
-        {
-          /*
-          <div className={s.container}>
-            <h1>React.js News</h1>
-            {this.props.news.map(item => (
-              <article key={item.link} className={s.newsItem}>
-                <h1 className={s.newsTitle}><a href={item.link}>{item.title}</a></h1>
-                <div
-                  className={s.newsDesc}
-                  // eslint-disable-next-line react/no-danger
-                  dangerouslySetInnerHTML={{__html: item.content}}
-                />
-              </article>
-            ))}
+        <div className={s.container}>
+          <div className="row">
+            <div id="vizContainer" style={{ width: 1300, height: 450, display: 'block', overflow: 'hidden' }} />
           </div>
-          */
-        }
+          <div className="row">
+            <button type="button" id="displaySelected" className="btn btn-default" style={{ display: 'none' }} >
+              View Selected
+            </button>
+            <button id="exportTo360" className="btn btn-default" style={{ display: 'none' }} >
+              Export to 360
+            </button>
+            <button id="sendAnEmail" className="btn btn-default" style={{ display: 'none' }} >
+              Email
+            </button>
+          </div>
+          <div className="row">
+            <div id="dataTable" />
+          </div>
+          <div id="selectedContactsModal" title="Selected Contacts">
+            <div id="selectedContactsTable" />
+          </div>
+        </div>
       </div>
     );
   }

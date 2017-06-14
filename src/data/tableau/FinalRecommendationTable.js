@@ -1,4 +1,4 @@
-import { get, set, keys, reduce, isUndefined, pick } from 'lodash';
+import { get, set, keys, reduce, isUndefined, pick, filter, chain } from 'lodash';
 
 // ref. http://docs.telerik.com/kendo-ui/api/javascript/ui/grid
 const metaData = {
@@ -10,12 +10,15 @@ const metaData = {
       title: 'Account ID',
       type: 'string',
       sortable: false,
+      filterable: true,
+      displayAsSelected: true,
     },
     'District': {
       field: 'district',
       tableauName: 'District',
       title: 'District',
       type: 'string',
+      displayAsSelected: true,
     },
     'Marketing Associate': {
       field: 'marketingAssociate',
@@ -28,12 +31,14 @@ const metaData = {
       tableauName: 'Account Type',
       title: 'Account Type',
       type: 'string',
+      displayAsSelected: true,
     },
     Company: {
       field: 'company',
       tableauName: 'Company',
       title: 'Company',
       type: 'string',
+      displayAsSelected: true,
     },
     'Customer City': {
       field: 'customerCity',
@@ -46,6 +51,7 @@ const metaData = {
       tableauName: 'Cuisine Type',
       title: 'Cuisine Type',
       type: 'string',
+      displayAsSelected: true,
     },
 
     /*'Reco.IC 1': {
@@ -53,6 +59,7 @@ const metaData = {
      tableauName: 'Reco.IC 1',
      title: 'Reco.IC 1',
      type: 'string',
+     filterable: true,
      },
      'Reco.IC 2': {
      field: 'recoIC2',
@@ -145,23 +152,29 @@ class FinalRecommendationTable {
   /**
    * Process the data
    */
-  getFormattedData() {
-    let data = this.data.map((row) => {
-      let d = {};
+  getFormattedData = () => {
+    // @TODO - Refactor this
+    const data = this.data.map((row) => {
+      const d = {};
       row.map((col, j) => {
-        let confData = get(metaData.fields, get(this.columns, `${j}.$0.$1`));
+        const confData = get(metaData.fields, get(this.columns, `${j}.$0.$1`));
         if (!isUndefined(confData)) {
-          set(d, confData.field, get(col, 'formattedValue'))
-        };
+          set(d, confData.field, get(col, 'formattedValue'));
+        }
       });
       return d;
     });
     return data;
   }
 
-  getMetadata () {
-    return metaData;
-  }
+  getMetadata = () => metaData;
 
+  getMetaDataForSelectedTable = () => {
+    return { fields: chain(metaData.fields)
+      .filter(data => data.displayAsSelected)
+      .keyBy('tableauName')
+      .value(),
+    };
+  }
 }
 export default FinalRecommendationTable;

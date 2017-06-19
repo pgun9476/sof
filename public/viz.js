@@ -97,6 +97,9 @@ function loadData() {
   displayLoading('#dataTable');
 
   sheet.getSummaryDataAsync(options).then(function(table) {
+
+    console.log(JSON.stringify(table.getData()))
+
     $.ajax({
       type: 'POST',
       url: '/api/tableau/init/data',

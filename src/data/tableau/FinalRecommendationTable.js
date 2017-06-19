@@ -53,44 +53,44 @@ const metaData = {
       type: 'string',
       displayAsSelected: true,
     },
-
-    /*'Reco.IC 1': {
-     field: 'recoIC1',
-     tableauName: 'Reco.IC 1',
-     title: 'Reco.IC 1',
-     type: 'string',
-     filterable: true,
-     },
-     'Reco.IC 2': {
-     field: 'recoIC2',
-     tableauName: 'Reco.IC 2',
-     title: 'Reco.IC 2',
-     type: 'string',
-     },
-     'Reco.IC 3': {
-     field: 'recoIC3',
-     tableauName: 'Reco.IC 3',
-     title: 'Reco.IC 3',
-     type: 'string',
-     },
-     'Reco.IC 4': {
-     field: 'recoIC4',
-     tableauName: 'Reco.IC 4',
-     title: 'Reco.IC 4',
-     type: 'string',
-     },
-     'Reco.IC 5': {
-     field: 'recoIC5',
-     tableauName: 'Reco.IC 5',
-     title: 'Reco.IC 5',
-     type: 'string',
-     },
-     'Medal Status': {
-     field: 'medalStatus',
-     tableauName: 'Medal Status',
-     title: 'Medal Status',
-     type: 'string',
-     },
+    'Reco.IC 1': {
+      field: 'recoIC1',
+      tableauName: 'Reco.IC 1',
+      title: 'Reco.IC 1',
+      type: 'string',
+      filterable: true,
+    },
+    'Reco.IC 2': {
+      field: 'recoIC2',
+      tableauName: 'Reco.IC 2',
+      title: 'Reco.IC 2',
+      type: 'string',
+    },
+    'Reco.IC 3': {
+      field: 'recoIC3',
+      tableauName: 'Reco.IC 3',
+      title: 'Reco.IC 3',
+      type: 'string',
+    },
+    'Reco.IC 4': {
+      field: 'recoIC4',
+      tableauName: 'Reco.IC 4',
+      title: 'Reco.IC 4',
+      type: 'string',
+    },
+    'Reco.IC 5': {
+      field: 'recoIC5',
+      tableauName: 'Reco.IC 5',
+      title: 'Reco.IC 5',
+      type: 'string',
+    },
+    'Medal Status': {
+      field: 'medalStatus',
+      tableauName: 'Medal Status',
+      title: 'Medal Status',
+      type: 'string',
+    },
+    /*
      'Priority': {
      field: 'priority',
      tableauName: 'Priority',
@@ -140,7 +140,7 @@ const metaData = {
      title: 'All Other',
      type: 'number',
      },*/
-  }
+  },
 };
 
 class FinalRecommendationTable {
